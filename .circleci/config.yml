@@ -8,10 +8,10 @@ jobs:
       - checkout
       - run:
           name: Build
-          command: ./build LIBS netlrts-linux-x86_64 -j3 --with-production --enable-error-checking --enable-lbuserdata -g -Werror=vla
+          command: ./build LIBS netlrts-linux-x86_64 -j3 --with-production --enable-error-checking --enable-lbuserdata -g -Werror=vla --build-shared -charm-shared
       - run:
           name: Test
-          command: make -C netlrts-linux-x86_64/tmp -j3 all-test-tests all-test-examples OPTS="-g" &&  make -C netlrts-linux-x86_64/tmp test-tests test-examples TESTOPTS="++local"
+          command: make -C netlrts-linux-x86_64/tmp -j3 all-test-tests all-test-examples OPTS="-g -charm-shared" &&  make -C netlrts-linux-x86_64/tmp test-tests test-examples TESTOPTS="++local"
  
   NetLRTS-smp:
     machine:
@@ -21,10 +21,10 @@ jobs:
       - checkout
       - run:
           name: Build
-          command: ./build LIBS netlrts-linux-x86_64 smp -j3 --with-production --enable-error-checking --enable-lbuserdata -g -Werror=vla
+          command: ./build LIBS netlrts-linux-x86_64 smp -j3 --with-production --enable-error-checking --enable-lbuserdata -g -Werror=vla --build-shared -charm-shared
       - run:
           name: Test
-          command: make -C netlrts-linux-x86_64-smp/tmp -j3 all-test-tests all-test-examples OPTS="-g" && make -C netlrts-linux-x86_64-smp/tmp test-tests test-examples TESTOPTS="++local +setcpuaffinity +CmiSleepOnIdle"
+          command: make -C netlrts-linux-x86_64-smp/tmp -j3 all-test-tests all-test-examples OPTS="-g -charm-shared" && make -C netlrts-linux-x86_64-smp/tmp test-tests test-examples TESTOPTS="++local +setcpuaffinity +CmiSleepOnIdle"
  
 workflows:
   version: 2
