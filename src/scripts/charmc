@@ -1561,7 +1561,7 @@ modInitObj="$modInitName.o"
 MAKE_LDXX="0"
 MAKE_LD="0"
 
-CORE_LIBS="-lconv-core -ltmgr -lconv-util -lconv-partition $TRACE_OBJ $CMK_HWLOC_LIBS"
+CORE_LIBS="-lconv-core -lconv-util -ltmgr -lconv-partition $TRACE_OBJ $CMK_HWLOC_LIBS"
 
 # get TAU stub makefile variables
 if test "$CMK_WITH_TAU" = "true"
