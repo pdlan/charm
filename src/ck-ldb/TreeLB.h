@@ -157,7 +157,6 @@ class TreeLB : public CBase_TreeLB
 
   // TODO: I would rename this group of functions (to maybe something like startLBLocal)
   // since they are also used in non-AtSync mode
-  static void staticAtSync(void*);
   virtual void InvokeLB();  // Start load balancing at this PE
   void Migrated(int waitBarrier = 1);
   void ProcessAtSync();  // Receive a message from AtSync to avoid making projections
@@ -173,11 +172,6 @@ class TreeLB : public CBase_TreeLB
 
   void multicastIDM(const IDM& idm, int num_pes, int* _pes);
 
-  // called by LBManager when an actual chare migrates into this PE.
-  // only happens in last level of tree
-  static void staticObjMovedIn(void* me, LDObjHandle h, bool waitBarrier = true);
-  void objMovedIn(bool waitBarrier = true);
-
   void resumeClients();
 
   void reportLbTime(double* times, int n);
@@ -188,7 +182,7 @@ class TreeLB : public CBase_TreeLB
   // receive load stats from lower level
   void receiveStats(TreeLBMessage* stats, int level);
 
-  void loadBalanceSubtree(int level);
+  void loadBalanceSubtree(const int level);
 
   // receive lb decision from parent (decision could be empty -do nothing-)
   // a non-empty decision implies load is moved from one subtree to another subtree
@@ -222,7 +216,7 @@ class TreeLB : public CBase_TreeLB
       return false;
   }
 
-  inline void checkLoadExchanged(int level)
+  inline void checkLoadExchanged(const int level)
   {
     if (checkLoadSent(level) && checkLoadReceived(level)) loadBalanceSubtree(level);
   }

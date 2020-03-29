@@ -12,16 +12,16 @@ void TreeLB::staticStartLB(void* data)
   ((TreeLB*)data)->StartLB();
 }
 
-void TreeLB::staticObjMovedIn(void* data, LDObjHandle h, bool waitBarrier)
-{
-  //  ((TreeLB*)data)->objMovedIn(h, waitBarrier);
-}
-
 void TreeLB::Migrated(int waitBarrier)
 {
-  bool barrier = false;
-  if (waitBarrier) barrier = true;
-  objMovedIn(barrier);
+  if (!waitBarrier) CkAbort("TreeLB future migrates not supported\n");
+
+  // fprintf(stderr, "[%d] TreeLB::Migrated\n", CkMyPe());
+
+  const int level = 0;
+  CkAssert(numLevels > 0 && awaitingLB[level]);
+  load_received[level] += 1;
+  checkLoadExchanged(level);
 }
 
 void TreeLB::init(const CkLBOptions& opts)
@@ -456,18 +456,6 @@ void TreeLB::recvLoadTokens(CkMessage* tokens)
 #endif
   int load = logic[level]->tokensReceived(token_set);
   load_received[level] += load;
-  checkLoadExchanged(level);
-}
-
-void TreeLB::objMovedIn(bool waitBarrier)
-{
-  if (!waitBarrier) CkAbort("TreeLB future migrates not supported\n");
-
-  // fprintf(stderr, "[%d] TreeLB::objMovedIn\n", CkMyPe());
-
-  int level = 0;
-  CkAssert(numLevels > 0 && awaitingLB[level]);
-  load_received[level] += 1;
   checkLoadExchanged(level);
 }
 
