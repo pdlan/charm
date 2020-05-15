@@ -163,7 +163,7 @@ then
   then
     # link the user program as its own file
     [ -z "$OBJECT" ] && USEROBJECT="a.out$USER_SUFFIX" || USEROBJECT="${OBJECT%$CMK_POST_EXE}$USER_SUFFIX"
-    SHIM_OPTS="$SHIM_OPTS -standalone -fPIE -fvisibility=hidden -Wl,-undefined,dynamic_lookup"
+    SHIM_OPTS="$SHIM_OPTS -standalone -fPIE -Wl,-undefined,dynamic_lookup"
     Do $CHARMBIN/charmc $ARGS $AMPICC_POST_OPTS $SHIM_OPTS $SHIM_OBJS $SHARED_OPTS -o "$USEROBJECT"
     status=$?
     [ $status -ne 0 ] && exit $status
@@ -188,7 +188,7 @@ then
     fi
   else
     AMPICC_POST_OPTS="$AMPICC_POST_OPTS $SHIM_OPTS -fPIE"
-    [ -z "$BUILD_SHARE" ] && AMPICC_POST_OPTS="$AMPICC_POST_OPTS $SHARED_OPTS -fvisibility=hidden"
+    [ -z "$BUILD_SHARE" ] && AMPICC_POST_OPTS="$AMPICC_POST_OPTS $SHARED_OPTS"
   fi
 fi
 
